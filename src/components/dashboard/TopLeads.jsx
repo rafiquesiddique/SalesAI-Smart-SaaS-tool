@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Building2, Star, ArrowRight, Sparkles } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
+import { createPageUrl } from "@/lib/utils";
 
 export default function TopLeads({ leads, isLoading }) {
   const getTopLeads = () => {

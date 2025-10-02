@@ -85,7 +85,7 @@ export default function AddActivityDialog({ open, onClose, onActivityAdded, lead
                 </SelectTrigger>
                 <SelectContent>
                   {leads.map((lead) => (
-                    <SelectItem key={lead.id} value={lead.id}>
+                    <SelectItem key={lead._id} value={lead._id}> {/* Use _id */}
                       {lead.name} - {lead.company}
                     </SelectItem>
                   ))}

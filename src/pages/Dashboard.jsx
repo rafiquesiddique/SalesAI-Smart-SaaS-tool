@@ -5,14 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Users, Target, DollarSign, Calendar, ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
+import { createPageUrl } from "@/lib/utils"; // Corrected import path
 
 import MetricCard from "@/components/dashboard/MetricCard";
 import ConversionChart from "@/components/dashboard/ConversionChart";
 import LeadPipeline from "@/components/dashboard/LeadPipeline";
 import TopLeads from "@/components/dashboard/TopLeads";
 import RecentActivity from "@/components/dashboard/RecentActivity";
-import AIInsights from "../components/dashboard/AIInsights";
+import AIInsightPanel from "@/components/dashboard/AIInsightPanel"; // Corrected component name and path
 
 export default function Dashboard() {
   const [leads, setLeads] = useState([]);
@@ -25,13 +25,20 @@ export default function Dashboard() {
 
   const loadData = async () => {
     setIsLoading(true);
-    const [leadsData, activitiesData] = await Promise.all([
-      Lead.list('-created_date', 50),
-      Activity.list('-created_date', 20)
-    ]);
-    setLeads(leadsData);
-    setActivities(activitiesData);
-    setIsLoading(false);
+    try {
+      // Pass sort and limit to list methods
+      const [leadsData, activitiesData] = await Promise.all([
+        Lead.list('-createdAt', 50), // Assuming 'createdAt' is the field for created date in backend
+        Activity.list('-createdAt', 20) // Assuming 'createdAt' is the field for created date in backend
+      ]);
+      setLeads(leadsData.data); // Backend returns { success: true, data: [...] }
+      setActivities(activitiesData.data); // Backend returns { success: true, data: [...] }
+    } catch (error) {
+      console.error("Error loading dashboard data:", error);
+      // Handle error (e.g., show a message to the user)
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const calculateMetrics = () => {
@@ -61,7 +68,7 @@ export default function Dashboard() {
           <p className="text-slate-600 mt-1">AI-powered insights to maximize your conversion rates</p>
         </div>
         <div className="flex gap-3">
-          <Link to={createPageUrl("Leads")}>
+          <Link to="/leads">
             <Button className="bg-blue-600 hover:bg-blue-700">
               <Users className="w-4 h-4 mr-2" />
               View All Leads
@@ -124,7 +131,7 @@ export default function Dashboard() {
 
         {/* Right Column - Insights & Activity */}
         <div className="space-y-6">
-          <AIInsights leads={leads} isLoading={isLoading} />
+          <AIInsightPanel leads={leads} activities={activities} isLoading={isLoading} /> {/* Corrected component name */}
           <TopLeads leads={leads} isLoading={isLoading} />
           <RecentActivity activities={activities} isLoading={isLoading} />
         </div>

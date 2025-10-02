@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Building2, Mail, Phone, Sparkles, ArrowRight, Star } from "lucide-react";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
+import { createPageUrl } from "@/lib/utils";
 
 const statusColors = {
   'new': 'bg-slate-100 text-slate-700',

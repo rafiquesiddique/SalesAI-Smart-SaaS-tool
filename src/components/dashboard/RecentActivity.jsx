@@ -56,7 +56,7 @@ export default function RecentActivity({ activities, isLoading }) {
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-slate-900 truncate text-sm">{activity.subject}</p>
                     <p className="text-xs text-slate-600">
-                      {format(new Date(activity.created_date), "MMM d, h:mm a")}
+                      {activity.created_date ? format(new Date(activity.created_date), "MMM d, h:mm a") : 'Pending...'}
                     </p>
                   </div>
                   <Badge variant="outline" className="text-xs">
